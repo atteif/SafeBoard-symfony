@@ -48,22 +48,33 @@ class LostAndFoundController extends Controller
     public function newAction(Request $request)
     {
 
-        $lostAndFound = new Lostandfound();
-        $form = $this->createForm('LostAndFoundBundle\Form\LostAndFoundType', $lostAndFound);
-        $form->handleRequest($request);
+        // $lostAndFound = new Lostandfound();
+        // $form = $this->createForm('LostAndFoundBundle\Form\LostAndFoundType', $lostAndFound);
+        // $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($lostAndFound);
-            $em->flush();
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $em = $this->getDoctrine()->getManager();
+        //     $em->persist($lostAndFound);
+        //     $em->flush();
 
-            return $this->redirectToRoute('lostandfound_show', array('id' => $lostAndFound->getId()));
-        }
+        //     return $this->redirectToRoute('lostandfound_show', array('id' => $lostAndFound->getId()));
+        // }
 
-        return $this->render('lostandfound/new.html.twig', array(
-            'lostAndFound' => $lostAndFound,
-            'form' => $form->createView(),
-        ));
+        // return $this->render('lostandfound/new.html.twig', array(
+        //     'lostAndFound' => $lostAndFound,
+        //     'form' => $form->createView(),
+        // ));
+        $data=$request->getContent();
+        //deserialize data: création d'un objet 'livre' à partir des données json envoyées
+        $lostAndFound=$this->get('jms_serializer')->deserialize($data,'LostAndFoundBundle\Entity\LostAndFound','json');
+        //ajout dans la base
+        $em=$this->getDoctrine()->getManager();
+        $em->persist($lostAndFound);
+        $em->flush();
+        return new Response('livre ajouté avec succès');
+
+
+
     }
 
     /**
