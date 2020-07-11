@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Lostandfounds list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Label</th>
+                <th>Date</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for lostAndFound in lostAndFounds %}
+            <tr>
+                <td><a href="{{ path('lostandfound_show', { 'id': lostAndFound.id }) }}">{{ lostAndFound.id }}</a></td>
+                <td>{{ lostAndFound.label }}</td>
+                <td>{% if lostAndFound.date %}{{ lostAndFound.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ lostAndFound.image }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('lostandfound_show', { 'id': lostAndFound.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('lostandfound_edit', { 'id': lostAndFound.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('lostandfound_new') }}">Create a new lostAndFound</a>
+        </li>
+    </ul>
+{% endblock %}

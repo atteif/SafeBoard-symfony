@@ -1,0 +1,8 @@
+lost_and_found:
+    resource: "@LostAndFoundBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
