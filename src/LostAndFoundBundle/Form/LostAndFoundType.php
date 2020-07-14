@@ -13,7 +13,7 @@ class LostAndFoundType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('label')->add('date')->add('image');
+        $builder->add('label')->add('date', 'datetime', ['widget' => 'single_text'])->add('image');
     }/**
      * {@inheritdoc}
      */

@@ -29,8 +29,8 @@ class LostAndFoundController extends Controller
 
         $lostAndFounds = $em->getRepository(LostAndFound::class)->findAll();
 
-        $date=$this -> get('jms_serializer')->serialize($lostAndFounds,'json');
-        $res= new Response($date);
+        $data=$this -> get('jms_serializer')->serialize($lostAndFounds,'json');
+        $res= new Response($data);
 
         return($res);
 
@@ -69,6 +69,7 @@ class LostAndFoundController extends Controller
         $lostAndFound=$this->get('jms_serializer')->deserialize($data,'LostAndFoundBundle\Entity\LostAndFound','json');
         //ajout dans la base
         $em=$this->getDoctrine()->getManager();
+        
         $em->persist($lostAndFound);
         $em->flush();
         return new Response('livre ajouté avec succès');
