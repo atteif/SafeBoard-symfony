@@ -31,16 +31,21 @@ class LostAndFound
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="date")
+     * @ORM\Column(name="createdAt", type="date" ,nullable=true)
      */
-    private $date;
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="image", type="string", length=255)
+     * One Product has One Shipment.
+     * @ORM\OneToOne(targetEntity="LostAndFoundBundle\Entity\File",cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="file_id", referencedColumnName="id")
      */
-    private $image;
+    private $file;
 
 
     /**
@@ -80,13 +85,13 @@ class LostAndFound
     /**
      * Set date
      *
-     * @param \DateTime $date
+     * @param \DateTime $createdAt
      *
      * @return LostAndFound
      */
-    public function setDate($date)
+    public function setCreatedAt($createdAt)
     {
-        $this->date = $date;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -96,21 +101,21 @@ class LostAndFound
      *
      * @return \DateTime
      */
-    public function getDate()
+    public function getCreatedAt()
     {
-        return $this->date;
+        return $this->createdAt;
     }
 
     /**
      * Set image
      *
-     * @param string $image
+     * @param \LostAndFoundBundle\Entity\File $file
      *
      * @return LostAndFound
      */
-    public function setImage($image)
+    public function setFile($file)
     {
-        $this->image = $image;
+        $this->file = $file;
 
         return $this;
     }
@@ -118,11 +123,11 @@ class LostAndFound
     /**
      * Get image
      *
-     * @return string
+     * @return \LostAndFoundBundle\Entity\File
      */
-    public function getImage()
+    public function getFile()
     {
-        return $this->image;
+        return $this->file;
     }
 }
 

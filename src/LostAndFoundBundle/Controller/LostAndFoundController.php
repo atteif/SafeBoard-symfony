@@ -3,13 +3,13 @@
 namespace LostAndFoundBundle\Controller;
 
 use LostAndFoundBundle\Entity\LostAndFound;
+use LostAndFoundBundle\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 /**
  * Lostandfound controller.
  *
@@ -25,18 +25,22 @@ class LostAndFoundController extends Controller
      */
     public function indexAction()
     {
+        // $em = $this->getDoctrine()->getManager();
+
+        // $lostAndFounds = $em->getRepository('LostAndFoundBundle:LostAndFound')->findAll();
+
+        // return $this->render('lostandfound/index.html.twig', array(
+        //     'lostAndFounds' => $lostAndFounds,
+        // ));
+
         $em = $this->getDoctrine()->getManager();
 
         $lostAndFounds = $em->getRepository(LostAndFound::class)->findAll();
 
         $data=$this -> get('jms_serializer')->serialize($lostAndFounds,'json');
-        $res= new Response($data);
+        $res= new Response('<html><body>Hello heloo !</body></html>');
 
         return($res);
-
-        // return $this->render('lostandfound/index.html.twig', array(
-        //     'lostAndFounds' => $lostAndFounds,
-        // ));
     }
 
     /**
@@ -47,35 +51,79 @@ class LostAndFoundController extends Controller
      */
     public function newAction(Request $request)
     {
+         $lostAndFound = new Lostandfound();
 
-        // $lostAndFound = new Lostandfound();
-        // $form = $this->createForm('LostAndFoundBundle\Form\LostAndFoundType', $lostAndFound);
-        // $form->handleRequest($request);
 
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     $em = $this->getDoctrine()->getManager();
-        //     $em->persist($lostAndFound);
-        //     $em->flush();
 
-        //     return $this->redirectToRoute('lostandfound_show', array('id' => $lostAndFound->getId()));
-        // }
 
-        // return $this->render('lostandfound/new.html.twig', array(
-        //     'lostAndFound' => $lostAndFound,
-        //     'form' => $form->createView(),
-        // ));
-        $data=$request->getContent();
-        //deserialize data: création d'un objet 'livre' à partir des données json envoyées
-        $lostAndFound=$this->get('jms_serializer')->deserialize($data,'LostAndFoundBundle\Entity\LostAndFound','json');
-        //ajout dans la base
+
+
+
+         $em=$this->getDoctrine()->getManager();
+        //$post = new Post();
+        $file = new File();
+        $uploadedImage=$request->files->get('file');
+         /**
+         * @var UploadedFile $image
+         */
+
+
+        $image=$uploadedImage;
+        $imageName=md5(uniqid()).'.'.$image->guessExtension();
+        $image->move($file->getUploadRootDir(),$imageName);
+        $file->setImage($imageName);
+        $file->setUpdateAt(new \DateTime());
         $em=$this->getDoctrine()->getManager();
-        
-        $em->persist($lostAndFound);
+        $em->persist($file);
         $em->flush();
-        return new Response('livre ajouté avec succès');
+        //  $data=$request->getContent();
+        // //deserialize data: création d'un objet 'livre' à partir des données json envoyées
+        //  $lostAndFound=$this->get('jms_serializer')->deserialize($data,'LostAndFoundBundle\Entity\LostAndFound','json');
+        //  $post= new Post(NULL,"");
+         
+        // //  $lostAndFound->setLabel($request->get('label'));
+        // //  $lostAndFound->setCreatedAt($request->get('createdAt'));
+        //  $lostAndFoundd->setLabel($lostAndFound->getLabel());
+        //  $lostAndFoundd->setCreatedAt($lostAndFound->getCreatedAt());
+        //  //$post->setPath($lostAndFound->getImage());
+        //  $post->setPath("/home/geek//Desktop/apple-touch-icon.png");
+        
+        //  $lostAndFoundd->setImage($post);
 
+        
+        $lostAndFoundd = new LostAndFound();
 
+        $form = $this->createForm('LostAndFoundBundle\Form\LostAndFoundType', $lostAndFound);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();            
+            $lostAndFoundd = $form->getData();
+            dump($lostAndFoundd);
+            $em->persist($lostAndFound);
+            $em->flush();
+
+            return $this->redirectToRoute('lostandfound_show', array('id' => $lostAndFound->getId()));
+        }
+
+        return $this->render('lostandfound/new.html.twig', array(
+            'lostAndFound' => $lostAndFound,
+            'form' => $form->createView(),
+        ));
+        
+        
+
+        // $data=$request->getContent();
+        
+        // //deserialize data: création d'un objet 'livre' à partir des données json envoyées
+        // //$lostAndFound=$this->get('jms_serializer')->deserialize($data,'LostAndFoundBundle\Entity\LostAndFound','json');
+        // //ajout dans la base
+        
+        // $em=$this->getDoctrine()->getManager();
+        // //$em->persist($post);
+        // $em->persist($lostAndFoundd);
+        // $em->flush();
+        // return new Response('livre ajouté avec succès');
     }
 
     /**

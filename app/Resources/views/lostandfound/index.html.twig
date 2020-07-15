@@ -8,8 +8,7 @@
             <tr>
                 <th>Id</th>
                 <th>Label</th>
-                <th>Date</th>
-                <th>Image</th>
+                <th>Createdat</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -18,8 +17,7 @@
             <tr>
                 <td><a href="{{ path('lostandfound_show', { 'id': lostAndFound.id }) }}">{{ lostAndFound.id }}</a></td>
                 <td>{{ lostAndFound.label }}</td>
-                <td>{% if lostAndFound.date %}{{ lostAndFound.date|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ lostAndFound.image }}</td>
+                <td>{% if lostAndFound.createdAt %}{{ lostAndFound.createdAt|date('Y-m-d') }}{% endif %}</td>
                 <td>
                     <ul>
                         <li>

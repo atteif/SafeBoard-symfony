@@ -3,24 +3,28 @@
 namespace LostAndFoundBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LostAndFoundType extends AbstractType
+class PostType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('label')->add('createdAt')->add('image',PostType::class);
-    }/**
+        $builder
+            ->add('file',FileType::class)            ;
+    }
+    
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'LostAndFoundBundle\Entity\LostAndFound'
+            'data_class' => 'LostAndFoundBundle\Entity\Post'
         ));
     }
 
@@ -29,7 +33,7 @@ class LostAndFoundType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'lostandfoundbundle_lostandfound';
+        return 'lostandfoundbundle_post';
     }
 
 

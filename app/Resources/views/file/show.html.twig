@@ -1,31 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Lostandfound</h1>
+    <h1>File</h1>
 
     <table>
         <tbody>
             <tr>
                 <th>Id</th>
-                <td>{{ lostAndFound.id }}</td>
+                <td>{{ file.id }}</td>
+            </tr>
+            <tr>
+                <th>Updateat</th>
+                <td>{% if file.updateAt %}{{ file.updateAt|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Label</th>
-                <td>{{ lostAndFound.label }}</td>
+                <td>{{ file.label }}</td>
             </tr>
             <tr>
-                <th>Createdat</th>
-                <td>{% if lostAndFound.createdAt %}{{ lostAndFound.createdAt|date('Y-m-d') }}{% endif %}</td>
+                <th>Image</th>
+                <td>{{ file.image }}</td>
             </tr>
         </tbody>
     </table>
 
     <ul>
         <li>
-            <a href="{{ path('lostandfound_index') }}">Back to the list</a>
+            <a href="{{ path('file_index') }}">Back to the list</a>
         </li>
         <li>
-            <a href="{{ path('lostandfound_edit', { 'id': lostAndFound.id }) }}">Edit</a>
+            <a href="{{ path('file_edit', { 'id': file.id }) }}">Edit</a>
         </li>
         <li>
             {{ form_start(delete_form) }}
